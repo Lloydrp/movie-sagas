@@ -3,12 +3,13 @@ import "./App.css";
 import MovieList from "../Pages/MovieList/MovieList";
 import Details from "../Pages/Details/Details";
 import AddMovie from "../Pages/AddMovie/AddMovie";
+import Header from "../Header/Header";
 
 function App() {
   return (
     <div className="App">
-      <h1>The Movies Saga!</h1>
       <Router>
+        <Header />
         <Route path="/" exact>
           <MovieList />
         </Route>
