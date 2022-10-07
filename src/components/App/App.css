@@ -16,3 +16,7 @@
 .App-intro {
   font-size: large;
 }
+
+li {
+  list-style: none;
+}
