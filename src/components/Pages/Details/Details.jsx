@@ -10,9 +10,14 @@ function Details() {
   const history = useHistory();
   //Get specific movie from store
   const movieFromStore = useSelector((store) => store.movies[movieid - 1]);
+  const genres = useSelector((store) => store.genres.allGenres);
+  const recentGenres = useSelector((store) => store.genres.recentGenres[0]);
+  console.log("genres :>> ", genres, recentGenres);
 
   useEffect(() => {
     dispatch({ type: "FETCH_MOVIES" });
+    dispatch({ type: "FETCH_GENRES" });
+    dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
   return movieFromStore?.description === undefined ? (
