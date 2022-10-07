@@ -9,11 +9,11 @@ function Details() {
   const dispatch = useDispatch();
   const history = useHistory();
   //Get specific movie from store
-  const movieFromStore = useSelector((store) => store.movies[movieid - 1]);
+  const movieFromStore = useSelector((store) => store.movies.recentMovie[0]);
   const recentGenres = useSelector((store) => store.genres.recentGenres[0]);
 
   useEffect(() => {
-    dispatch({ type: "FETCH_MOVIES" });
+    dispatch({ type: "FETCH_ID_MOVIE", payload: movieid });
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
@@ -30,8 +30,8 @@ function Details() {
       />
       <p>Genres:</p>
       <ul>
-        {recentGenres?.genre_array.map((item) => (
-          <li>{item}</li>
+        {recentGenres?.genre_array.map((item, index) => (
+          <li key={index}>{item}</li>
         ))}
       </ul>
       <p>{movieFromStore.description}</p>

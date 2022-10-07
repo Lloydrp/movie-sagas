@@ -14,6 +14,7 @@ import axios from "axios";
 // Create the rootSaga generator function
 function* rootSaga() {
   yield takeEvery("FETCH_MOVIES", fetchAllMovies);
+  yield takeEvery("FETCH_ID_MOVIE", fetchIdMovie);
   yield takeEvery("FETCH_GENRES", fetchAllGenres);
   yield takeEvery("FETCH_ID_GENRE", fetchIdGenre);
 }
@@ -29,6 +30,16 @@ function* fetchAllMovies() {
   }
 }
 
+function* fetchIdMovie(action) {
+  //Setup pull genres for specific ID
+  try {
+    const movie = yield axios.get(`/api/movie/details/${action.payload}`);
+    yield put({ type: "SET_RECENT_MOVIE", payload: movie.data });
+  } catch (error) {
+    console.log("error caught in fetchGenres :>> ", error);
+  }
+} //end fetchIdGenre
+
 function* fetchAllGenres(action) {
   //Setup pull for all genres in DB
   try {
@@ -42,8 +53,8 @@ function* fetchAllGenres(action) {
 function* fetchIdGenre(action) {
   //Setup pull genres for specific ID
   try {
-    const genres = yield axios.get(`/api/genre/details/${action.payload}`);
-    yield put({ type: "SET_RECENT_GENRES", payload: genres.data });
+    const genre = yield axios.get(`/api/genre/details/${action.payload}`);
+    yield put({ type: "SET_RECENT_GENRES", payload: genre.data });
   } catch (error) {
     console.log("error caught in fetchGenres :>> ", error);
   }
@@ -53,10 +64,12 @@ function* fetchIdGenre(action) {
 const sagaMiddleware = createSagaMiddleware();
 
 // Used to store movies returned from the server
-const movies = (state = [], action) => {
+const movies = (state = { allMovies: [], recentMovie: {} }, action) => {
   switch (action.type) {
     case "SET_MOVIES":
-      return action.payload;
+      return { ...state, allMovies: action.payload };
+    case "SET_RECENT_MOVIE":
+      return { ...state, recentMovie: action.payload };
     default:
       return state;
   }

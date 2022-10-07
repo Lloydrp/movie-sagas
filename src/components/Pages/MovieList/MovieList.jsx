@@ -8,7 +8,7 @@ function MovieList() {
   const dispatch = useDispatch();
   const history = useHistory();
   //Get movies from redux store
-  const movies = useSelector((store) => store.movies);
+  const movies = useSelector((store) => store.movies.allMovies);
 
   //Setup clickHandler for entire section
   function clickHandler(id) {
