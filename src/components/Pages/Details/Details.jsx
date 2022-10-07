@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 function Details() {
   //Setup router params
   const { movieid } = useParams();
   //Setup redux variables
   const dispatch = useDispatch();
+  const history = useHistory();
   //Get specific movie from store
   const movieFromStore = useSelector((store) => store.movies[movieid - 1]);
 
@@ -26,6 +27,9 @@ function Details() {
         alt={"Image of the movie" + movieFromStore.title}
       />
       <p>{movieFromStore.description}</p>
+      <button onClick={() => history.replace("/")}>
+        Go back to Movie List
+      </button>
     </section>
   );
 }
