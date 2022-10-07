@@ -35,9 +35,7 @@ function Details() {
         ))}
       </ul>
       <p>{movieFromStore.description}</p>
-      <button onClick={() => history.replace("/")}>
-        Go back to Movie List
-      </button>
+      <button onClick={() => history.replace("/")}>Return to Movie List</button>
     </section>
   );
 }
