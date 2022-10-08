@@ -28,7 +28,8 @@ router.get("/details/:movieid", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  const client = await pool.connect();
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie
   const insertMovieQuery = `
@@ -43,28 +44,21 @@ router.post("/", (req, res) => {
       req.body.poster,
       req.body.description,
     ])
-    .then((result) => {
+    .then(async (result) => {
       console.log("New Movie Id:", result.rows[0].id); //ID IS HERE!
 
       const createdMovieId = result.rows[0].id;
 
-      // Now handle the genre reference
-      const insertMovieGenreQuery = `
-      INSERT INTO "movies_genres" ("movie_id", "genre_id")
-      VALUES  ($1, $2);
-      `;
-      // SECOND QUERY ADDS GENRE FOR THAT NEW MOVIE
-      pool
-        .query(insertMovieGenreQuery, [createdMovieId, req.body.genre_id])
-        .then((result) => {
-          //Now that both are done, send back success!
-          res.sendStatus(201);
+      //Second query to insert multiple genres into the many to many table
+      await client.query("BEGIN");
+      await Promise.all(
+        req.body.genre_id.map((genre) => {
+          const insertGenre = `INSERT INTO "movies_genres" ("movie_id", "genre_id") VALUES  ($1, $2);`;
+          const insertValues = [createdMovieId, genre];
+          return client.query(insertGenre, insertValues);
         })
-        .catch((err) => {
-          // catch for second query
-          console.log(err);
-          res.sendStatus(500);
-        });
+      );
+      await client.query("COMMIT");
 
       // Catch for first query
     })

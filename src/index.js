@@ -17,6 +17,7 @@ function* rootSaga() {
   yield takeEvery("FETCH_ID_MOVIE", fetchIdMovie);
   yield takeEvery("FETCH_GENRES", fetchAllGenres);
   yield takeEvery("FETCH_ID_GENRE", fetchIdGenre);
+  yield takeEvery("ADD_MOVIE", addMovie);
 }
 
 function* fetchAllMovies() {
@@ -58,6 +59,15 @@ function* fetchIdGenre(action) {
     console.log("error caught in fetchGenres :>> ", error);
   }
 } //end fetchIdGenre
+
+function* addMovie(action) {
+  try {
+    yield axios.post("api/movie/", action.payload);
+    yield put({ type: "FETCH_MOVIES" });
+  } catch (error) {
+    console.log("error caught in addMovie :>> ", error);
+  }
+} //end addMovie
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
