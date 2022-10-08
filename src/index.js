@@ -17,13 +17,13 @@ function* rootSaga() {
   yield takeEvery("FETCH_ID_MOVIE", fetchIdMovie);
   yield takeEvery("FETCH_GENRES", fetchAllGenres);
   yield takeEvery("FETCH_ID_GENRE", fetchIdGenre);
+  yield takeEvery("ADD_MOVIE", addMovie);
 }
 
 function* fetchAllMovies() {
   // get all movies from the DB
   try {
     const movies = yield axios.get("/api/movie");
-    console.log("get all:", movies.data);
     yield put({ type: "SET_MOVIES", payload: movies.data });
   } catch {
     console.log("get all error");
@@ -60,6 +60,15 @@ function* fetchIdGenre(action) {
   }
 } //end fetchIdGenre
 
+function* addMovie(action) {
+  try {
+    yield axios.post("api/movie/", action.payload);
+    yield put({ type: "FETCH_MOVIES" });
+  } catch (error) {
+    console.log("error caught in addMovie :>> ", error);
+  }
+} //end addMovie
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -94,7 +103,7 @@ const storeInstance = createStore(
     genres,
   }),
   // Add sagaMiddleware to our store
-  applyMiddleware(sagaMiddleware, logger)
+  applyMiddleware(sagaMiddleware)
 );
 
 // Pass rootSaga into our sagaMiddleware

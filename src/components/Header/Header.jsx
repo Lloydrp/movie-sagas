@@ -1,14 +1,20 @@
-import { useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 
-function Header() {
+function Header({ addButton }) {
   //Setup router variables
   const history = useHistory();
   return (
     <header>
       <h1>The Movie Saga!</h1>
-      <div>
-        <button onClick={() => history.push("/addmovie")}>Add Movie</button>
-      </div>
+      <Route
+        exact
+        path="/"
+        render={() => (
+          <div>
+            <button onClick={() => history.push("/addmovie")}>Add Movie</button>
+          </div>
+        )}
+      />
     </header>
   );
 }
