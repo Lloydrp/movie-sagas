@@ -18,6 +18,9 @@ function* rootSaga() {
   yield takeEvery("FETCH_GENRES", fetchAllGenres);
   yield takeEvery("FETCH_ID_GENRE", fetchIdGenre);
   yield takeEvery("ADD_MOVIE", addMovie);
+  yield takeEvery("REFRESH_GENRES", refreshGenres);
+  yield takeEvery("REFRESH_MOVIE", refreshMovie);
+  yield takeEvery("DELETE_MOVIE", deleteMovie);
 }
 
 function* fetchAllMovies() {
@@ -69,6 +72,34 @@ function* addMovie(action) {
   }
 } //end addMovie
 
+function* refreshGenres(action) {
+  try {
+    yield axios.delete(`/api/genre/removegenre/${action.payload.id}`);
+    yield axios.post(`/api/genre/${action.payload.id}`, {
+      checkboxes: action.payload.checkboxes,
+    });
+  } catch (error) {
+    console.log("error caught in refreshGenres :>> ", error);
+  }
+}
+
+function* refreshMovie(action) {
+  try {
+    yield axios.put(`/api/movie/`, action.payload);
+  } catch (error) {
+    console.log("error caught in refreshMovie :>> ", error);
+  }
+}
+
+function* deleteMovie(action) {
+  try {
+    yield axios.delete(`/api/movie/moviegenre/${action.payload}`);
+    yield axios.delete(`/api/movie/${action.payload}`);
+  } catch (error) {
+    console.log("error caught in deleteMovie :>> ", error);
+  }
+}
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -79,6 +110,8 @@ const movies = (state = { allMovies: [], recentMovie: {} }, action) => {
       return { ...state, allMovies: action.payload };
     case "SET_RECENT_MOVIE":
       return { ...state, recentMovie: action.payload };
+    case "RESET_RECENT_MOVIE":
+      return { ...state, recentMovie: {} };
     default:
       return state;
   }
@@ -91,6 +124,8 @@ const genres = (state = { allGenres: [], recentGenres: {} }, action) => {
       return { ...state, allGenres: action.payload };
     case "SET_RECENT_GENRES":
       return { ...state, recentGenres: action.payload };
+    case "RESET_RECENT_MOVIE":
+      return { ...state, recentGenres: {} };
     default:
       return state;
   }
