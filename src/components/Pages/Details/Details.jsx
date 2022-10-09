@@ -12,20 +12,44 @@ function Details() {
   //Get specific movie from store
   const movieFromStore = useSelector((store) => store.movies.recentMovie[0]);
   const recentGenres = useSelector((store) => store.genres.recentGenres[0]);
+  const genres = useSelector((store) => store.genres.allGenres);
   //Setup local state
   const [toggleEditMode, setToggleEditMode] = useState(false);
-  const [title, setTitle] = useState(movieFromStore?.title);
-  const [posterUrl, setPosterUrl] = useState(movieFromStore?.poster);
-  const [description, setDescription] = useState(movieFromStore?.description);
-  //Safegaurd to update local state on initial load so it can be displayed in edit mode
+  const [title, setTitle] = useState("");
+  const [posterUrl, setPosterUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [checkboxes, setCheckboxes] = useState([]);
+  const [toggleCheckbox, setToggleCheckbox] = useState(false);
+
+  //Safeguard to update local state on initial load so it can be displayed in edit mode
   //Using last defined variable for additional padding
-  if (movieFromStore?.description !== undefined && description === undefined) {
+  if (
+    (movieFromStore?.description !== undefined && description === "") ||
+    title !== movieFromStore?.title
+  ) {
     setTitle(movieFromStore?.title);
     setPosterUrl(movieFromStore?.poster);
     setDescription(movieFromStore?.description);
   }
 
+  //Safeguard to update local state on initial load for recent genre
+  if (recentGenres?.genre_array !== undefined && checkboxes.length === 0) {
+    let newArray = recentGenres.genre_array.map((item) => String(item));
+    setCheckboxes(newArray);
+  }
+
+  function checkboxHandler(event) {
+    if (event.target.checked) {
+      setCheckboxes([...checkboxes, event.target.value]);
+    } else {
+      setCheckboxes(checkboxes.filter((item) => item !== event.target.value));
+    }
+  } //end checkboxHandler
+
+  console.log("checkboxes :>> ", checkboxes);
+
   useEffect(() => {
+    dispatch({ type: "FETCH_GENRES" });
     dispatch({ type: "FETCH_ID_MOVIE", payload: movieid });
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
@@ -37,7 +61,7 @@ function Details() {
         <h2>Loading...</h2>
       </section>
     );
-  } else if (toggleEditMode) {
+  } else if (toggleEditMode && checkboxes) {
     //Begin EDIT MODE detail page
     return (
       <section>
@@ -62,9 +86,34 @@ function Details() {
           />
         </div>
         <p>Genres:</p>
+        <div className="multiselect">
+          <div onClick={() => setToggleCheckbox(!toggleCheckbox)}>
+            Select an option <span>V</span>
+          </div>
+          {toggleCheckbox && (
+            <div id="checkboxes">
+              {genres.map((genre, index) => (
+                <label key={index} htmlFor={genre.id}>
+                  <input
+                    checked={
+                      checkboxes.some((item) => item === String(genre.id))
+                        ? true
+                        : false
+                    }
+                    value={genre.id}
+                    type="checkbox"
+                    id={genre.id}
+                    onChange={(event) => checkboxHandler(event)}
+                  />
+                  {genre?.name}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
         <ul>
           {recentGenres?.genre_array.map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index}>{genres[item].name}</li>
           ))}
         </ul>
         <textarea
@@ -92,7 +141,7 @@ function Details() {
         <p>Genres:</p>
         <ul>
           {recentGenres?.genre_array.map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index}>{genres[item].name}</li>
           ))}
         </ul>
         <p>{movieFromStore.description}</p>

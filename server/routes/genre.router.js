@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 
 //Begin router to get genres related to movie ID
 router.get("/details/:movieid", (req, res) => {
-  const queryText = `SELECT "movies"."id", array_agg("genres"."name") AS "genre_array" 
+  const queryText = `SELECT "movies"."id", array_agg("genres"."id") AS "genre_array" 
   FROM "movies"
   JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
   JOIN "genres" ON "movies_genres"."genre_id" = "genres"."id"
