@@ -3,7 +3,16 @@ const router = express.Router();
 const pool = require("../modules/pool");
 
 router.get("/", (req, res) => {
-  const query = `SELECT * FROM movies ORDER BY "title" ASC`;
+  const query = `SELECT 
+	"movies"."id" AS "id",
+	"movies"."title",
+	"movies"."poster",
+	"movies"."description",
+	array_agg("genres"."name") AS "genre_array" FROM "movies"
+JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
+JOIN "genres" ON "genres"."id" = "movies_genres"."genre_id"
+GROUP BY "movies"."id"
+ORDER BY "title" ASC;`;
   pool
     .query(query)
     .then((result) => {

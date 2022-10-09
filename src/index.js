@@ -78,6 +78,7 @@ function* refreshGenres(action) {
     yield axios.post(`/api/genre/${action.payload.id}`, {
       checkboxes: action.payload.checkboxes,
     });
+    put({ type: "FETCH_ID_GENRE", payload: movieid });
   } catch (error) {
     console.log("error caught in refreshGenres :>> ", error);
   }
@@ -86,6 +87,7 @@ function* refreshGenres(action) {
 function* refreshMovie(action) {
   try {
     yield axios.put(`/api/movie/`, action.payload);
+    yield put({ type: "FETCH_MOVIES" });
   } catch (error) {
     console.log("error caught in refreshMovie :>> ", error);
   }
@@ -138,7 +140,7 @@ const storeInstance = createStore(
     genres,
   }),
   // Add sagaMiddleware to our store
-  applyMiddleware(sagaMiddleware)
+  applyMiddleware(sagaMiddleware, logger)
 );
 
 // Pass rootSaga into our sagaMiddleware

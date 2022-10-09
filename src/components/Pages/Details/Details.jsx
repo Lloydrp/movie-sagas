@@ -48,7 +48,10 @@ function Details() {
       type: "REFRESH_MOVIE",
       payload: { title, description, poster: posterUrl, id: movieid },
     });
-    setToggleEditMode(false);
+    dispatch({ type: "RESET_RECENT_MOVIE" });
+    dispatch({ type: "RESET_RECENT_GENRES" });
+    history.replace("/");
+    dispatch({ type: "FETCH_MOVIES" });
   }
 
   function handleReturnToMovies() {
@@ -68,6 +71,9 @@ function Details() {
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
+  // if (movieFromStore?.title === undefined) {
+  //   return <h2>Loading...</h2>;
+  // } else
   if (toggleEditMode) {
     //Begin EDIT MODE detail page
     return (
@@ -81,8 +87,8 @@ function Details() {
           />
         </div>
         <img
-          src={movieFromStore.poster}
-          alt={"Image of the movie" + movieFromStore.title}
+          src={movieFromStore?.poster}
+          alt={"Image of the movie" + movieFromStore?.title}
         />
         <div>
           <input
