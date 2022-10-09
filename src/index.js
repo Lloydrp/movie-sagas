@@ -20,6 +20,7 @@ function* rootSaga() {
   yield takeEvery("ADD_MOVIE", addMovie);
   yield takeEvery("REFRESH_GENRES", refreshGenres);
   yield takeEvery("REFRESH_MOVIE", refreshMovie);
+  yield takeEvery("DELETE_MOVIE", deleteMovie);
 }
 
 function* fetchAllMovies() {
@@ -87,6 +88,15 @@ function* refreshMovie(action) {
     yield axios.put(`/api/movie/`, action.payload);
   } catch (error) {
     console.log("error caught in refreshMovie :>> ", error);
+  }
+}
+
+function* deleteMovie(action) {
+  try {
+    yield axios.delete(`/api/movie/moviegenre/${action.payload}`);
+    yield axios.delete(`/api/movie/${action.payload}`);
+  } catch (error) {
+    console.log("error caught in deleteMovie :>> ", error);
   }
 }
 

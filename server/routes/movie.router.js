@@ -86,4 +86,30 @@ router.put("/", (req, res) => {
     });
 });
 
+router.delete("/:movieid", (req, res) => {
+  const queryText = `DELETE FROM "movies" WHERE "id" = $1;`;
+
+  pool
+    .query(queryText, [req.params.movieid])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in DELETE Movie :>> ", error);
+    });
+});
+
+router.delete("/moviegenre/:movieid", (req, res) => {
+  const queryText = `DELETE FROM "movies_genres" WHERE "movie_id" = $1;`;
+
+  pool
+    .query(queryText, [req.params.movieid])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in DELETE Movie :>> ", error);
+    });
+});
+
 module.exports = router;

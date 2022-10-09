@@ -19,7 +19,6 @@ function Details() {
   const [posterUrl, setPosterUrl] = useState("");
   const [description, setDescription] = useState("");
   const [checkboxes, setCheckboxes] = useState(null);
-  const [toggleCheckbox, setToggleCheckbox] = useState(false);
 
   //Safeguard to update local state on initial load so it can be displayed in edit mode
   //Using last defined variable for additional padding
@@ -57,21 +56,19 @@ function Details() {
     dispatch({ type: "RESET_RECENT_GENRES" });
     history.replace("/");
   }
-  console.log("recentGenres.genre_array :>> ", recentGenres?.genre_array);
+
+  function handleDelete() {
+    dispatch({ type: "DELETE_MOVIE", payload: movieid });
+    history.replace("/");
+  }
+
   useEffect(() => {
     dispatch({ type: "FETCH_GENRES" });
     dispatch({ type: "FETCH_ID_MOVIE", payload: movieid });
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
-  if (movieFromStore?.description === undefined) {
-    //Begin loading screen
-    return (
-      <section>
-        <h2>Loading...</h2>
-      </section>
-    );
-  } else if (toggleEditMode && checkboxes) {
+  if (toggleEditMode) {
     //Begin EDIT MODE detail page
     return (
       <section>
@@ -125,16 +122,17 @@ function Details() {
         ></textarea>
         <button onClick={() => handleSave()}>Save</button>
         <button onClick={() => setToggleEditMode(false)}>Cancel</button>
+        <button onClick={() => handleDelete()}>Delete</button>
       </section>
     );
   } else {
     return (
       //Begin base Detail page
       <section>
-        <h2>{movieFromStore.title}</h2>
+        <h2>{movieFromStore?.title}</h2>
         <img
-          src={movieFromStore.poster}
-          alt={"Image of the movie" + movieFromStore.title}
+          src={movieFromStore?.poster}
+          alt={"Image of the movie" + movieFromStore?.title}
         />
         <p>Genres:</p>
         <ul>
@@ -142,7 +140,7 @@ function Details() {
             <li key={index}>{genres[item - 1]?.name}</li>
           ))}
         </ul>
-        <p>{movieFromStore.description}</p>
+        <p>{movieFromStore?.description}</p>
         <button onClick={() => setToggleEditMode(true)}>Edit</button>
         <button onClick={() => handleReturnToMovies()}>
           Return to Movie List
