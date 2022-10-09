@@ -43,13 +43,13 @@ function Details() {
   } //end checkboxHandler
 
   function handleSave() {
+    //SHOULD COMBINE REFRESHES INTO ONE
     dispatch({ type: "REFRESH_GENRES", payload: { checkboxes, id: movieid } });
     dispatch({
       type: "REFRESH_MOVIE",
       payload: { title, description, poster: posterUrl, id: movieid },
     });
-    dispatch({ type: "RESET_RECENT_MOVIE" });
-    dispatch({ type: "RESET_RECENT_GENRES" });
+    dispatch({ type: "RESET_RECENT" });
     history.replace("/");
     dispatch({ type: "FETCH_MOVIES" });
   }

@@ -112,7 +112,7 @@ const movies = (state = { allMovies: [], recentMovie: {} }, action) => {
       return { ...state, allMovies: action.payload };
     case "SET_RECENT_MOVIE":
       return { ...state, recentMovie: action.payload };
-    case "RESET_RECENT_MOVIE":
+    case "RESET_RECENT":
       return { ...state, recentMovie: {} };
     default:
       return state;
@@ -126,7 +126,7 @@ const genres = (state = { allGenres: [], recentGenres: {} }, action) => {
       return { ...state, allGenres: action.payload };
     case "SET_RECENT_GENRES":
       return { ...state, recentGenres: action.payload };
-    case "RESET_RECENT_MOVIE":
+    case "RESET_RECENT":
       return { ...state, recentGenres: {} };
     default:
       return state;
@@ -140,7 +140,7 @@ const storeInstance = createStore(
     genres,
   }),
   // Add sagaMiddleware to our store
-  applyMiddleware(sagaMiddleware, logger)
+  applyMiddleware(sagaMiddleware)
 );
 
 // Pass rootSaga into our sagaMiddleware

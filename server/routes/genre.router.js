@@ -51,16 +51,19 @@ router.delete("/removegenre/:movieid", (req, res) => {
 router.post("/:movieid", async (req, res) => {
   const client = await pool.connect();
 
-  //Second query to insert multiple genres into the many to many table
-  await client.query("BEGIN");
-  await Promise.all(
-    req.body.checkboxes.map((genre) => {
-      const insertGenre = `INSERT INTO "movies_genres" ("movie_id", "genre_id") VALUES  ($1, $2);`;
-      const insertValues = [req.params.movieid, genre];
-      return client.query(insertGenre, insertValues);
-    })
-  );
-  await client.query("COMMIT");
+  try {
+    await client.query("BEGIN");
+    await Promise.all(
+      req.body.checkboxes.map((genre) => {
+        const insertGenre = `INSERT INTO "movies_genres" ("movie_id", "genre_id") VALUES  ($1, $2);`;
+        const insertValues = [req.params.movieid, genre];
+        return client.query(insertGenre, insertValues);
+      })
+    );
+    await client.query("COMMIT");
+  } catch (error) {
+    console.log("error caught in POST MovieID :>> ", error);
+  }
 });
 
 module.exports = router;

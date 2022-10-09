@@ -13,6 +13,7 @@ JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
 JOIN "genres" ON "genres"."id" = "movies_genres"."genre_id"
 GROUP BY "movies"."id"
 ORDER BY "title" ASC;`;
+
   pool
     .query(query)
     .then((result) => {
