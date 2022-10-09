@@ -23,10 +23,7 @@ function Details() {
 
   //Safeguard to update local state on initial load so it can be displayed in edit mode
   //Using last defined variable for additional padding
-  if (
-    (movieFromStore?.description !== undefined && description === "") ||
-    title !== movieFromStore?.title
-  ) {
+  if (movieFromStore?.description !== undefined && description === "") {
     setTitle(movieFromStore?.title);
     setPosterUrl(movieFromStore?.poster);
     setDescription(movieFromStore?.description);
@@ -52,6 +49,12 @@ function Details() {
       type: "REFRESH_MOVIE",
       payload: { title, description, poster: posterUrl, id: movieid },
     });
+    history.replace(`/details/${movieid}`);
+  }
+
+  function handleReturnToMovies() {
+    dispatch({ type: "RESET_RECENT_MOVIE" });
+    history.replace("/");
   }
 
   useEffect(() => {
@@ -152,7 +155,7 @@ function Details() {
         </ul>
         <p>{movieFromStore.description}</p>
         <button onClick={() => setToggleEditMode(true)}>Edit</button>
-        <button onClick={() => history.replace("/")}>
+        <button onClick={() => handleReturnToMovies()}>
           Return to Movie List
         </button>
       </section>

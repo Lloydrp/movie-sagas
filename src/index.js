@@ -100,6 +100,8 @@ const movies = (state = { allMovies: [], recentMovie: {} }, action) => {
       return { ...state, allMovies: action.payload };
     case "SET_RECENT_MOVIE":
       return { ...state, recentMovie: action.payload };
+    case "RESET_RECENT_MOVIE":
+      return { ...state, recentMovie: {} };
     default:
       return state;
   }
