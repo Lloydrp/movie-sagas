@@ -46,7 +46,13 @@ function Details() {
     }
   } //end checkboxHandler
 
-  console.log("checkboxes :>> ", checkboxes);
+  function handleSave() {
+    dispatch({ type: "REFRESH_GENRES", payload: { checkboxes, id: movieid } });
+    dispatch({
+      type: "REFRESH_MOVIE",
+      payload: { title, description, poster: posterUrl, id: movieid },
+    });
+  }
 
   useEffect(() => {
     dispatch({ type: "FETCH_GENRES" });
@@ -113,7 +119,7 @@ function Details() {
         </div>
         <ul>
           {recentGenres?.genre_array.map((item, index) => (
-            <li key={index}>{genres[item].name}</li>
+            <li key={index}>{genres[item]?.name}</li>
           ))}
         </ul>
         <textarea
@@ -125,7 +131,7 @@ function Details() {
           rows="15"
           placeholder="Enter movie description..."
         ></textarea>
-        <button>Save</button>
+        <button onClick={() => handleSave()}>Save</button>
         <button onClick={() => setToggleEditMode(false)}>Cancel</button>
       </section>
     );
@@ -141,7 +147,7 @@ function Details() {
         <p>Genres:</p>
         <ul>
           {recentGenres?.genre_array.map((item, index) => (
-            <li key={index}>{genres[item].name}</li>
+            <li key={index}>{genres[item]?.name}</li>
           ))}
         </ul>
         <p>{movieFromStore.description}</p>

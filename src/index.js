@@ -18,6 +18,8 @@ function* rootSaga() {
   yield takeEvery("FETCH_GENRES", fetchAllGenres);
   yield takeEvery("FETCH_ID_GENRE", fetchIdGenre);
   yield takeEvery("ADD_MOVIE", addMovie);
+  yield takeEvery("REFRESH_GENRES", refreshGenres);
+  yield takeEvery("REFRESH_MOVIE", refreshMovie);
 }
 
 function* fetchAllMovies() {
@@ -68,6 +70,25 @@ function* addMovie(action) {
     console.log("error caught in addMovie :>> ", error);
   }
 } //end addMovie
+
+function* refreshGenres(action) {
+  try {
+    yield axios.delete(`/api/genre/removegenre/${action.payload.id}`);
+    yield axios.post(`/api/genre/${action.payload.id}`, {
+      checkboxes: action.payload.checkboxes,
+    });
+  } catch (error) {
+    console.log("error caught in refreshGenres :>> ", error);
+  }
+}
+
+function* refreshMovie(action) {
+  try {
+    yield axios.put(`/api/movie/`, action.payload);
+  } catch (error) {
+    console.log("error caught in refreshMovie :>> ", error);
+  }
+}
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
