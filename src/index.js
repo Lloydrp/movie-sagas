@@ -30,7 +30,7 @@ function* fetchAllMovies(action) {
   } catch {
     console.log("get all error");
   }
-}
+} //end fetchAllMovies
 
 function* fetchIdMovie(action) {
   //Setup pull genres for specific ID
@@ -63,6 +63,7 @@ function* fetchIdGenre(action) {
 } //end fetchIdGenre
 
 function* addMovie(action) {
+  //Add new movie
   try {
     yield axios.post("api/movie/", action.payload);
     yield put({ type: "FETCH_MOVIES" });
@@ -72,15 +73,17 @@ function* addMovie(action) {
 } //end addMovie
 
 function* deleteMovie(action) {
+  //Delete a movie by ID
   try {
     yield axios.delete(`/api/movie/moviegenre/${action.payload}`);
     yield axios.delete(`/api/movie/${action.payload}`);
   } catch (error) {
     console.log("error caught in deleteMovie :>> ", error);
   }
-}
+} //end deleteMovie
 
 function* refreshFromSave(action) {
+  //Run actions after save on edit screen
   try {
     yield axios.delete(`/api/genre/removegenre/${action.payload.id}`);
     yield axios.post(`/api/genre/${action.payload.id}`, {
@@ -91,7 +94,7 @@ function* refreshFromSave(action) {
   } catch (error) {
     console.log("error caught in refreshFromSave :>> ", error);
   }
-}
+} //end refreshFromSave
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
