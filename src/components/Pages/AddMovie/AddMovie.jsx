@@ -19,6 +19,9 @@ function AddMovie() {
 
   //Begin function to handle submit clicks
   function clickHandler() {
+    //Simple gaurdclause for data validation
+    if (!title || !poster || !description || !checkboxes)
+      return alert("Please enter valid information");
     //Send inputs to server/DB
     dispatch({
       type: "ADD_MOVIE",
@@ -82,7 +85,7 @@ function AddMovie() {
             onClick={() => setToggleCheckbox(!toggleCheckbox)}
           >
             <p className="">
-              Select an option{" "}
+              Select Genres{" "}
               <span className="absolute top-1 right-0 float-right pr-3 align-bottom text-xs">
                 V
               </span>

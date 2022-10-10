@@ -39,6 +39,10 @@ function EditDetails({
 
   //Begin function to handle save dispatch
   function handleSave() {
+    //Simple gaurdclause for data validation
+    if (!title || !poster || !description || !checkboxes)
+      return alert("Please enter valid information");
+
     dispatch({
       type: "REFRESH_FROM_SAVE",
       payload: {
