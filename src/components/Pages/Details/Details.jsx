@@ -76,9 +76,6 @@ function Details() {
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
-  // if (movieFromStore?.title === undefined) {
-  //   return <h2>Loading...</h2>;
-  // } else
   if (toggleEditMode) {
     //Begin EDIT MODE detail page
     return (
