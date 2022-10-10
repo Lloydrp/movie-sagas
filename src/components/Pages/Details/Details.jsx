@@ -27,7 +27,6 @@ function Details() {
     setDescription(movieFromStore?.description);
   }
 
-  console.log("checkboxes :>> ", genres.recentGenres?.genre_array, checkboxes);
   //Safeguard to update local state on initial load for recent genre
   if (genres.recentGenres?.genre_array !== checkboxes && !toggleEditMode) {
     if (genres.recentGenres?.genre_array !== undefined)
@@ -79,81 +78,123 @@ function Details() {
   if (toggleEditMode) {
     //Begin EDIT MODE detail page
     return (
-      <section>
-        <div>
-          <input
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            type="text"
-            placeholder="Enter updated Title..."
+      <section className="flex justify-center">
+        <div className="flex w-4/5 flex-col">
+          <div className="flex items-center">
+            <input
+              className="my-5 h-2/5 w-full border-2 border-b-blue-700 bg-slate-200 p-5 text-center text-3xl font-bold"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              type="text"
+              placeholder="Enter updated Title..."
+            />
+          </div>
+          <img
+            className="mb-5 rounded-md border-2 border-black"
+            src={movieFromStore?.poster}
+            alt={"Image of the movie" + movieFromStore?.title}
           />
+          <div className="flex items-center justify-center">
+            <input
+              className="text-l h-1/5 w-full border-2 border-b-blue-700 bg-slate-200 py-5 text-center font-bold"
+              value={posterUrl}
+              onChange={(event) => setPosterUrl(event.target.value)}
+              type="text"
+              placeholder="Enter updated poster URL..."
+            />
+          </div>
+          <p className="font-bold">Genres:</p>
+          <div
+            className="flex h-44 w-2/3 flex-col flex-wrap items-start justify-start self-center"
+            id="checkboxes"
+          >
+            {genres.allGenres.map((genre, index) => (
+              <label className="mr-5" key={index} htmlFor={genre.id}>
+                <input
+                  className="mx-2"
+                  checked={
+                    checkboxes &&
+                    checkboxes.some((item) => item === String(genre.id))
+                      ? true
+                      : false
+                  }
+                  value={genre.id}
+                  type="checkbox"
+                  id={genre.id}
+                  onChange={(event) => checkboxHandler(event)}
+                />
+                {genre?.name}
+              </label>
+            ))}
+          </div>
+          <textarea
+            className="whitespace-normal"
+            onChange={(event) => setDescription(event.target.value)}
+            value={description}
+            name="movie-description"
+            id="movie-description"
+            cols="50"
+            rows="15"
+            placeholder="Enter movie description..."
+          ></textarea>
+          <div className="flex justify-between">
+            <button
+              className="my-5 w-1/4 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+              onClick={() => handleSave()}
+            >
+              Save
+            </button>
+            <button
+              className="my-5 w-1/4 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+              onClick={() => handleDelete()}
+            >
+              Delete
+            </button>
+            <button
+              className="my-5 w-1/4 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+              onClick={() => setToggleEditMode(false)}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-        <img
-          src={movieFromStore?.poster}
-          alt={"Image of the movie" + movieFromStore?.title}
-        />
-        <div>
-          <input
-            value={posterUrl}
-            onChange={(event) => setPosterUrl(event.target.value)}
-            type="text"
-            placeholder="Enter updated poster URL..."
-          />
-        </div>
-        <p>Genres:</p>
-        <div id="checkboxes">
-          {genres.allGenres.map((genre, index) => (
-            <label key={index} htmlFor={genre.id}>
-              <input
-                checked={
-                  checkboxes &&
-                  checkboxes.some((item) => item === String(genre.id))
-                    ? true
-                    : false
-                }
-                value={genre.id}
-                type="checkbox"
-                id={genre.id}
-                onChange={(event) => checkboxHandler(event)}
-              />
-              {genre?.name}
-            </label>
-          ))}
-        </div>
-        <textarea
-          onChange={(event) => setDescription(event.target.value)}
-          value={description}
-          name="movie-description"
-          id="movie-description"
-          cols="50"
-          rows="15"
-          placeholder="Enter movie description..."
-        ></textarea>
-        <button onClick={() => handleSave()}>Save</button>
-        <button onClick={() => setToggleEditMode(false)}>Cancel</button>
-        <button onClick={() => handleDelete()}>Delete</button>
       </section>
     );
   } else {
     return (
       //Begin base Detail page
-      <section>
-        <h2>{movieFromStore?.title}</h2>
-        <img
-          src={movieFromStore?.poster}
-          alt={"Image of the movie" + movieFromStore?.title}
-        />
-        <p>Genres:</p>
-        <ul>
-          {genres.recentGenres?.genre_array?.map((item, index) => (
-            <li key={index}>{genres.allGenres[item - 1]?.name}</li>
-          ))}
-        </ul>
-        <p>{movieFromStore?.description}</p>
-        <button onClick={() => setToggleEditMode(true)}>Edit</button>
-        <button onClick={() => handleReturnToMovies()}>
-          Return to Movie List
-        </button>
+      <section className="flex justify-center">
+        <div className="flex w-4/5 flex-col">
+          <h2 className="my-10 h-1/5 whitespace-normal text-5xl font-bold">
+            {movieFromStore?.title}
+          </h2>
+          <img
+            className="mb-5 rounded-md border-2 border-black"
+            src={movieFromStore?.poster}
+            alt={"Image of the movie" + movieFromStore?.title}
+          />
+          <p className="font-bold">Genres:</p>
+          <ul className="mb-10">
+            {genres.recentGenres?.genre_array?.map((item, index) => (
+              <li key={index}>{genres.allGenres[item - 1]?.name}</li>
+            ))}
+          </ul>
+          <p className="whitespace-normal">{movieFromStore?.description}</p>
+          <div className="flex justify-evenly">
+            <button
+              className="my-5 w-1/5 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+              onClick={() => setToggleEditMode(true)}
+            >
+              Edit
+            </button>
+            <button
+              className="my-5 w-3/5 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+              onClick={() => handleReturnToMovies()}
+            >
+              Return to Movie List
+            </button>
+          </div>
+        </div>
       </section>
     );
   }
