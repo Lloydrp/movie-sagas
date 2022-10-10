@@ -17,7 +17,7 @@ function Details() {
   const [title, setTitle] = useState("");
   const [posterUrl, setPosterUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [checkboxes, setCheckboxes] = useState(null);
+  const [checkboxes, setCheckboxes] = useState([]);
 
   //Safeguard to update local state on initial load so it can be displayed in edit mode
   //Using last defined variable for additional padding
@@ -27,10 +27,11 @@ function Details() {
     setDescription(movieFromStore?.description);
   }
 
+  console.log("checkboxes :>> ", genres.recentGenres?.genre_array, checkboxes);
   //Safeguard to update local state on initial load for recent genre
-  if (genres.recentGenres?.genre_array !== undefined && checkboxes === null) {
-    let newArray = genres.recentGenres.genre_array.map((item) => String(item));
-    setCheckboxes(newArray);
+  if (genres.recentGenres?.genre_array !== checkboxes && !toggleEditMode) {
+    if (genres.recentGenres?.genre_array !== undefined)
+      setCheckboxes(genres.recentGenres?.genre_array);
   }
 
   function checkboxHandler(event) {
@@ -42,14 +43,6 @@ function Details() {
   } //end checkboxHandler
 
   function handleSave() {
-    //SHOULD COMBINE REFRESHES INTO ONE
-    // dispatch({ type: "REFRESH_GENRES", payload: { checkboxes, id: movieid } });
-    // dispatch({
-    //   type: "REFRESH_MOVIE",
-    //   payload: { title, description, poster: posterUrl, id: movieid },
-    // });
-    // dispatch({ type: "RESET_RECENT" });
-    // dispatch({ type: "FETCH_MOVIES" });
     dispatch({
       type: "REFRESH_FROM_SAVE",
       payload: {
@@ -61,6 +54,9 @@ function Details() {
       },
     });
     history.replace("/");
+    setTimeout(() => {
+      dispatch({ type: "FETCH_MOVIES" });
+    }, 200);
   }
 
   function handleReturnToMovies() {
@@ -80,7 +76,6 @@ function Details() {
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
-  console.log("checkboxes, genres :>> ", checkboxes, genres);
   // if (movieFromStore?.title === undefined) {
   //   return <h2>Loading...</h2>;
   // } else
@@ -114,6 +109,7 @@ function Details() {
             <label key={index} htmlFor={genre.id}>
               <input
                 checked={
+                  checkboxes &&
                   checkboxes.some((item) => item === String(genre.id))
                     ? true
                     : false
@@ -153,7 +149,7 @@ function Details() {
         <p>Genres:</p>
         <ul>
           {genres.recentGenres?.genre_array?.map((item, index) => (
-            <li key={index}>{genres[item - 1]?.name}</li>
+            <li key={index}>{genres.allGenres[item - 1]?.name}</li>
           ))}
         </ul>
         <p>{movieFromStore?.description}</p>

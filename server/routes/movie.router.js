@@ -9,8 +9,8 @@ router.get("/", (req, res) => {
 	"movies"."poster",
 	"movies"."description",
 	array_agg("genres"."name") AS "genre_array" FROM "movies"
-JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
-JOIN "genres" ON "genres"."id" = "movies_genres"."genre_id"
+LEFT JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
+LEFT JOIN "genres" ON "genres"."id" = "movies_genres"."genre_id"
 GROUP BY "movies"."id"
 ORDER BY "title" ASC;`;
 
