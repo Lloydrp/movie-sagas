@@ -26,6 +26,9 @@ function AddMovie() {
     });
     //Push back to movieList
     history.replace("/");
+    setTimeout(() => {
+      dispatch({ type: "FETCH_MOVIES" });
+    }, 150);
   } //end clickHandler
 
   //Begin function to handle when checkboxes are checked/unchecked
@@ -63,7 +66,7 @@ function AddMovie() {
           placeholder="Enter movie poster url..."
         />
         <textarea
-          className="mb-3 whitespace-normal border-2 border-b-blue-700 bg-white"
+          className="mb-3 whitespace-normal border-2 border-b-blue-700 bg-white p-2"
           onChange={(event) => setDescription(event.target.value)}
           value={description}
           name="movie-description"
