@@ -15,6 +15,7 @@ function MovieList() {
     history.push(`/details/${id}`);
   } //End clickHandler
 
+  //Get initial list of movies on page load
   useEffect(() => {
     dispatch({ type: "FETCH_MOVIES" });
   }, []);

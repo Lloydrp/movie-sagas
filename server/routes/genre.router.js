@@ -14,9 +14,9 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log("error caught in GET genres :>> ", error);
     });
-});
+}); //end GET
 
-//Begin router to get genres related to movie ID
+//Begin router to get movie info related to movie ID
 router.get("/details/:movieid", (req, res) => {
   const queryText = `SELECT "movies"."id", array_agg("genres"."id"::TEXT) AS "genre_array" 
   FROM "movies"
@@ -28,14 +28,14 @@ router.get("/details/:movieid", (req, res) => {
   pool
     .query(queryText, [req.params.movieid])
     .then((result) => {
-      console.log("result.rows :>> ", result.rows[0]);
       res.send(result.rows[0]);
     })
     .catch((error) => {
       console.log("error caught in GET genres :>> ", error);
     });
-});
+}); //end GET
 
+//Begin router to delete movie
 router.delete("/removegenre/:movieid", (req, res) => {
   const queryText = `DELETE FROM "movies_genres" WHERE "movie_id" = $1;`;
 
@@ -47,8 +47,9 @@ router.delete("/removegenre/:movieid", (req, res) => {
     .catch((error) => {
       console.log("error caught in DELETE genres :>> ", error);
     });
-});
+}); //end DELETE
 
+//Begin router to POST new movie and all genres
 router.post("/:movieid", async (req, res) => {
   const client = await pool.connect();
 
@@ -65,6 +66,6 @@ router.post("/:movieid", async (req, res) => {
   } catch (error) {
     console.log("error caught in POST MovieID :>> ", error);
   }
-});
+}); //end POST
 
 module.exports = router;

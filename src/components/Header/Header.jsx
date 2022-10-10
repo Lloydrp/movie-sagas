@@ -3,9 +3,11 @@ import { Route, useHistory } from "react-router-dom";
 function Header() {
   //Setup router variables
   const history = useHistory();
+
   return (
     <header className="bg-blue-700 text-white">
       <h1 className="text-2xl font-bold">ProlloTech Movie Management</h1>
+      {/* Conditional rendering of add button only if on home page */}
       <Route
         exact
         path="/"

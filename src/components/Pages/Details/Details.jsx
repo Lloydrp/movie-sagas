@@ -33,14 +33,18 @@ function Details() {
       setCheckboxes(genres.recentGenres?.genre_array);
   }
 
+  //Begin function to handle checkboxes
   function checkboxHandler(event) {
     if (event.target.checked) {
+      //If checked add to checkboxes variable
       setCheckboxes([...checkboxes, event.target.value]);
     } else {
+      //If unchecked remove from checkboxes variable
       setCheckboxes(checkboxes.filter((item) => item !== event.target.value));
     }
   } //end checkboxHandler
 
+  //Begin function to handle save dispatch
   function handleSave() {
     dispatch({
       type: "REFRESH_FROM_SAVE",
@@ -53,22 +57,26 @@ function Details() {
       },
     });
     history.replace("/");
+    //Refresh movielist after short delay this likely is not the best fix
+    //If this is not on, then movies don't show until refreshed on main page
     setTimeout(() => {
       dispatch({ type: "FETCH_MOVIES" });
-    }, 100);
+    }, 150);
   }
 
+  //Begin function to clear recents when going back to home
   function handleReturnToMovies() {
-    dispatch({ type: "RESET_RECENT_MOVIE" });
-    dispatch({ type: "RESET_RECENT_GENRES" });
+    dispatch({ type: "RESET_RECENT" });
     history.replace("/");
-  }
+  } //end handleReturnToMovies
 
+  //Begin function to handle delete button
   function handleDelete() {
     dispatch({ type: "DELETE_MOVIE", payload: movieid });
     history.replace("/");
-  }
+  } //end handleDelete
 
+  //Get initial movie/genres by ID and update all genres to store
   useEffect(() => {
     dispatch({ type: "FETCH_GENRES" });
     dispatch({ type: "FETCH_ID_MOVIE", payload: movieid });

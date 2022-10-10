@@ -14,6 +14,7 @@ function AddMovie() {
   const [description, setDescription] = useState("");
   const [checkboxes, setCheckboxes] = useState([]);
   const [toggleCheckbox, setToggleCheckbox] = useState(false);
+  //Setup store variables
   const genres = useSelector((store) => store.genres.allGenres);
 
   //Begin function to handle submit clicks
@@ -27,17 +28,22 @@ function AddMovie() {
     history.replace("/");
   } //end clickHandler
 
+  //Begin function to handle when checkboxes are checked/unchecked
   function checkboxHandler(event) {
     if (event.target.checked) {
+      //If checked add to checkboxes variable
       setCheckboxes([...checkboxes, event.target.value]);
     } else {
+      //If not then remove from checkboxes variable
       setCheckboxes(checkboxes.filter((item) => item !== event.target.value));
     }
   } //end checkboxHandler
 
+  //Get initial genres on page load
   useEffect(() => {
     dispatch({ type: "FETCH_GENRES" });
   }, []);
+
   return (
     <section className="flex justify-center">
       <div className="flex w-4/5 flex-col md:w-1/3">
@@ -66,6 +72,7 @@ function AddMovie() {
           rows="10"
           placeholder="Enter movie description..."
         ></textarea>
+        {/* Begin section for popdown checkboxes */}
         <div className="multiselect">
           <div
             className="relative border-2 border-blue-700 bg-white"
@@ -78,6 +85,7 @@ function AddMovie() {
               </span>
             </p>
           </div>
+          {/* If clicked display checkboxes */}
           {toggleCheckbox && (
             <div
               className="mx-auto flex h-44 w-full flex-col flex-wrap items-start justify-start self-center border-2 border-blue-700 bg-white"

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../modules/pool");
 
+//Begin GET to retrieve move info with array of current genres
 router.get("/", (req, res) => {
   const query = `SELECT 
 	"movies"."id" AS "id",
@@ -23,8 +24,9 @@ ORDER BY "title" ASC;`;
       console.log("ERROR: Get all movies", err);
       res.sendStatus(500);
     });
-});
+}); //end GET
 
+//Begin GET to get all movies
 router.get("/details/:movieid", (req, res) => {
   const query = `SELECT * FROM "movies" WHERE "id" = $1`;
   pool
@@ -36,8 +38,9 @@ router.get("/details/:movieid", (req, res) => {
       console.log("ERROR: Get all movies", err);
       res.sendStatus(500);
     });
-});
+}); //end GET
 
+//Begin post to post new movie
 router.post("/", async (req, res) => {
   const client = await pool.connect();
   console.log(req.body);
@@ -76,8 +79,9 @@ router.post("/", async (req, res) => {
       console.log(err);
       res.sendStatus(500);
     });
-});
+}); //end POST
 
+//Begin PUT to update movie info on save
 router.put("/", (req, res) => {
   const queryText = `UPDATE "movies" SET "title" = $1, "description"= $2, "poster"=$3 WHERE "id" = $4;`;
 
@@ -94,8 +98,9 @@ router.put("/", (req, res) => {
     .catch((error) => {
       console.log("error caught in PUT :>> ", error);
     });
-});
+}); // end PUT
 
+//Begin DELETE to remove movie
 router.delete("/:movieid", (req, res) => {
   const queryText = `DELETE FROM "movies" WHERE "id" = $1;`;
 
@@ -107,8 +112,9 @@ router.delete("/:movieid", (req, res) => {
     .catch((error) => {
       console.log("error caught in DELETE Movie :>> ", error);
     });
-});
+}); // end DELETE
 
+//Begin DELETE to remove moviegenres from join table
 router.delete("/moviegenre/:movieid", (req, res) => {
   const queryText = `DELETE FROM "movies_genres" WHERE "movie_id" = $1;`;
 
@@ -120,6 +126,6 @@ router.delete("/moviegenre/:movieid", (req, res) => {
     .catch((error) => {
       console.log("error caught in DELETE Movie :>> ", error);
     });
-});
+}); //end DELETE
 
 module.exports = router;
