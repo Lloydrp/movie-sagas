@@ -49,23 +49,20 @@ router.delete("/removegenre/:movieid", (req, res) => {
     });
 }); //end DELETE
 
-//Begin router to POST new movie and all genres
+//Begin router to POST new genres
 router.post("/:movieid", async (req, res) => {
-  const client = await pool.connect();
+  const queryText = `INSERT INTO "movies_genres" ("movie_id", "genre_id") VALUES  ($1, $2);`;
 
-  try {
-    await client.query("BEGIN");
-    await Promise.all(
-      req.body.checkboxes.map((genre) => {
-        const insertGenre = `INSERT INTO "movies_genres" ("movie_id", "genre_id") VALUES  ($1, $2);`;
-        const insertValues = [req.params.movieid, genre];
-        return client.query(insertGenre, insertValues);
-      })
-    );
-    await client.query("COMMIT");
-  } catch (error) {
-    console.log("error caught in POST MovieID :>> ", error);
+  for (genre of req.body.checkboxes) {
+    pool
+      .query(queryText, [req.params.movieid, genre])
+      .then((result) => {})
+      .catch((error) => {
+        console.log("error caught in POST genres :>> ", error);
+      });
   }
+  res.sendStatus(200);
+
 }); //end POST
 
 module.exports = router;

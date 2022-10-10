@@ -20,6 +20,8 @@ function* rootSaga() {
   yield takeEvery("ADD_MOVIE", addMovie);
   yield takeEvery("DELETE_MOVIE", deleteMovie);
   yield takeEvery("REFRESH_FROM_SAVE", refreshFromSave);
+  yield takeEvery("POST_GENRES", postGenres);
+  yield takeEvery("PUT_MOVIE", putMovie);
 }
 
 function* fetchAllMovies(action) {
@@ -86,15 +88,31 @@ function* refreshFromSave(action) {
   //Run actions after save on edit screen
   try {
     yield axios.delete(`/api/genre/removegenre/${action.payload.id}`);
-    yield axios.post(`/api/genre/${action.payload.id}`, {
-      checkboxes: action.payload.checkboxes,
-    });
-    yield axios.put(`/api/movie/`, action.payload);
-    yield put({ type: "RESET_RECENT" });
+    yield put({ type: "POST_GENRES", payload: action.payload });
   } catch (error) {
     console.log("error caught in refreshFromSave :>> ", error);
   }
 } //end refreshFromSave
+
+function* postGenres(action) {
+  try {
+    yield axios.post(`/api/genre/${action.payload.id}`, {
+      checkboxes: action.payload.checkboxes,
+    });
+    put({ type: "PUT_MOVIE", payload: action.payload });
+  } catch (error) {
+    console.log("error caught in postGenres :>> ", error);
+  }
+}
+
+function* putMovie(action) {
+  try {
+    yield axios.put(`/api/movie/`, action.payload);
+    yield put({ type: "FETCH_MOVIES" });
+  } catch (error) {
+    console.log("error caught in putMovie :>> ", error);
+  }
+}
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
