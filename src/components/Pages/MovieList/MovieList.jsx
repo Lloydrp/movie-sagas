@@ -26,7 +26,7 @@ function MovieList() {
         {movies.map((movie) => {
           return (
             <div
-              className="mb-5 flex h-fit w-4/5 flex-col rounded-md border-2 border-black p-5"
+              className="mb-5 flex h-auto w-4/5 flex-col rounded-md border-2 border-black p-5 lg:mx-1 lg:w-1/4"
               key={movie.id}
               onClick={() => clickHandler(movie.id)}
             >
