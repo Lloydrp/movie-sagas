@@ -39,51 +39,80 @@ function AddMovie() {
     dispatch({ type: "FETCH_GENRES" });
   }, []);
   return (
-    <section>
-      <h2>Add Movie</h2>
-      <input
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        type="text"
-        placeholder="Enter movie title..."
-      />
-      <input
-        onChange={(event) => setPoster(event.target.value)}
-        value={poster}
-        type="text"
-        placeholder="Enter movie poster url..."
-      />
-      <textarea
-        onChange={(event) => setDescription(event.target.value)}
-        value={description}
-        name="movie-description"
-        id="movie-description"
-        cols="30"
-        rows="10"
-        placeholder="Enter movie description..."
-      ></textarea>
-      <div className="multiselect">
-        <div onClick={() => setToggleCheckbox(!toggleCheckbox)}>
-          Select an option <span>V</span>
-        </div>
-        {toggleCheckbox && (
-          <div id="checkboxes">
-            {genres.map((genres, index) => (
-              <label key={index} htmlFor={genres.id}>
-                <input
-                  value={genres.id}
-                  type="checkbox"
-                  id={genres.id}
-                  onChange={(event) => checkboxHandler(event)}
-                />
-                {genres.name}
-              </label>
-            ))}
+    <section className="flex justify-center">
+      <div className="flex w-4/5 flex-col">
+        <h2 className="my-3 text-xl font-bold">Add Movie</h2>
+        <input
+          className="text-l h-2/12 mb-3 w-full border-2 border-b-blue-700 bg-white py-1 text-center font-bold"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          type="text"
+          placeholder="Enter movie title..."
+        />
+        <input
+          className="text-l h-2/12 mb-3 w-full border-2 border-b-blue-700 bg-white py-1 text-center font-bold"
+          onChange={(event) => setPoster(event.target.value)}
+          value={poster}
+          type="text"
+          placeholder="Enter movie poster url..."
+        />
+        <textarea
+          className="mb-3 whitespace-normal border-2 border-b-blue-700 bg-white"
+          onChange={(event) => setDescription(event.target.value)}
+          value={description}
+          name="movie-description"
+          id="movie-description"
+          cols="30"
+          rows="10"
+          placeholder="Enter movie description..."
+        ></textarea>
+        <div className="multiselect">
+          <div
+            className="relative border-2 border-blue-700 bg-white"
+            onClick={() => setToggleCheckbox(!toggleCheckbox)}
+          >
+            <p className="">
+              Select an option{" "}
+              <span className="absolute top-1 right-0 float-right pr-3 align-bottom text-xs">
+                V
+              </span>
+            </p>
           </div>
-        )}
+          {toggleCheckbox && (
+            <div
+              className="mx-auto flex h-44 w-full flex-col flex-wrap items-start justify-start self-center border-2 border-blue-700 bg-white"
+              id="checkboxes"
+            >
+              {genres.map((genres, index) => (
+                <label className="mr-5" key={index} htmlFor={genres.id}>
+                  <input
+                    className="mx-2"
+                    value={genres.id}
+                    type="checkbox"
+                    id={genres.id}
+                    onChange={(event) => checkboxHandler(event)}
+                  />
+                  {genres.name}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-evenly">
+          <button
+            className="my-5 w-1/4 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+            onClick={() => clickHandler()}
+          >
+            Add Movie
+          </button>
+          <button
+            className="my-5 w-1/4 rounded-lg border-2 border-blue-700 hover:bg-blue-700 hover:text-white"
+            onClick={() => history.replace("/")}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
-      <button onClick={() => clickHandler()}>Add Movie</button>
-      <button onClick={() => history.replace("/")}>Cancel</button>
     </section>
   );
 }

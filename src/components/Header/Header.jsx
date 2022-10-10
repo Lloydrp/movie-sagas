@@ -11,8 +11,9 @@ function Header() {
         path="/"
         render={() => (
           <div>
+            <p className="mt-5">Add Movie:</p>
             <button
-              className="mt-5 inline-flex items-center rounded-full border-2 border-white bg-green-500 px-2 hover:border-black hover:bg-white hover:text-black"
+              className="inline-flex items-center rounded-full border-2 border-white bg-green-500 px-2 hover:border-black hover:bg-white hover:text-black"
               onClick={() => history.push("/addmovie")}
             >
               +

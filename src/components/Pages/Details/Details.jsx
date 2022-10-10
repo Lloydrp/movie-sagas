@@ -82,7 +82,7 @@ function Details() {
         <div className="flex w-4/5 flex-col">
           <div className="flex items-center">
             <input
-              className="my-5 h-2/5 w-full border-2 border-b-blue-700 bg-slate-200 p-5 text-center text-3xl font-bold"
+              className="my-5 h-2/5 w-full border-2 border-b-blue-700 bg-white p-5 text-center text-3xl font-bold"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               type="text"
@@ -96,7 +96,7 @@ function Details() {
           />
           <div className="flex items-center justify-center">
             <input
-              className="text-l h-1/5 w-full border-2 border-b-blue-700 bg-slate-200 py-5 text-center font-bold"
+              className="text-l h-1/5 w-full border-2 border-b-blue-700 bg-white py-5 text-center font-bold"
               value={posterUrl}
               onChange={(event) => setPosterUrl(event.target.value)}
               type="text"
@@ -128,7 +128,7 @@ function Details() {
             ))}
           </div>
           <textarea
-            className="whitespace-normal"
+            className="whitespace-normal bg-white"
             onChange={(event) => setDescription(event.target.value)}
             value={description}
             name="movie-description"
