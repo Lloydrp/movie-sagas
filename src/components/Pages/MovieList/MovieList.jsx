@@ -21,13 +21,24 @@ function MovieList() {
 
   return (
     <main>
-      <h1>MovieList</h1>
-      <section className="movies">
+      <h1 className="my-5 text-2xl font-bold">Top Movies</h1>
+      <section className="flex flex-wrap justify-evenly">
         {movies.map((movie) => {
           return (
-            <div key={movie.id} onClick={() => clickHandler(movie.id)}>
-              <h3>{movie.title}</h3>
-              <img src={movie.poster} alt={movie.title} />
+            <div
+              className="mb-5 flex h-fit w-4/5 flex-col rounded-md border-2 border-black p-5"
+              key={movie.id}
+              onClick={() => clickHandler(movie.id)}
+            >
+              <h3 className="mb-5 h-1/5 whitespace-normal text-xl font-bold">
+                {movie.title}
+              </h3>
+              <img
+                className="mb-5 rounded-md border-2 border-black"
+                src={movie.poster}
+                alt={movie.title}
+              />
+              <p className="font-bold">Genres:</p>
               {movie.genre_array.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
