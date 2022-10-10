@@ -28,7 +28,8 @@ router.get("/details/:movieid", (req, res) => {
   pool
     .query(queryText, [req.params.movieid])
     .then((result) => {
-      res.send(result.rows);
+      console.log("result.rows :>> ", result.rows[0]);
+      res.send(result.rows[0]);
     })
     .catch((error) => {
       console.log("error caught in GET genres :>> ", error);

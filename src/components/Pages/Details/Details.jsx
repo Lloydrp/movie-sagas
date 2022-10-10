@@ -11,8 +11,7 @@ function Details() {
   const history = useHistory();
   //Get specific movie from store
   const movieFromStore = useSelector((store) => store.movies.recentMovie[0]);
-  const recentGenres = useSelector((store) => store.genres.recentGenres[0]);
-  const genres = useSelector((store) => store.genres.allGenres);
+  const genres = useSelector((store) => store.genres);
   //Setup local state
   const [toggleEditMode, setToggleEditMode] = useState(false);
   const [title, setTitle] = useState("");
@@ -22,15 +21,15 @@ function Details() {
 
   //Safeguard to update local state on initial load so it can be displayed in edit mode
   //Using last defined variable for additional padding
-  if (movieFromStore?.description !== undefined && description === "") {
+  if (movieFromStore?.description !== description) {
     setTitle(movieFromStore?.title);
     setPosterUrl(movieFromStore?.poster);
     setDescription(movieFromStore?.description);
   }
 
   //Safeguard to update local state on initial load for recent genre
-  if (recentGenres?.genre_array !== undefined && checkboxes === null) {
-    let newArray = recentGenres.genre_array.map((item) => String(item));
+  if (genres.recentGenres?.genre_array !== undefined && checkboxes === null) {
+    let newArray = genres.recentGenres.genre_array.map((item) => String(item));
     setCheckboxes(newArray);
   }
 
@@ -44,14 +43,24 @@ function Details() {
 
   function handleSave() {
     //SHOULD COMBINE REFRESHES INTO ONE
-    dispatch({ type: "REFRESH_GENRES", payload: { checkboxes, id: movieid } });
+    // dispatch({ type: "REFRESH_GENRES", payload: { checkboxes, id: movieid } });
+    // dispatch({
+    //   type: "REFRESH_MOVIE",
+    //   payload: { title, description, poster: posterUrl, id: movieid },
+    // });
+    // dispatch({ type: "RESET_RECENT" });
+    // dispatch({ type: "FETCH_MOVIES" });
     dispatch({
-      type: "REFRESH_MOVIE",
-      payload: { title, description, poster: posterUrl, id: movieid },
+      type: "REFRESH_FROM_SAVE",
+      payload: {
+        checkboxes,
+        id: movieid,
+        title,
+        description,
+        poster: posterUrl,
+      },
     });
-    dispatch({ type: "RESET_RECENT" });
     history.replace("/");
-    dispatch({ type: "FETCH_MOVIES" });
   }
 
   function handleReturnToMovies() {
@@ -71,6 +80,7 @@ function Details() {
     dispatch({ type: "FETCH_ID_GENRE", payload: movieid });
   }, []);
 
+  console.log("checkboxes, genres :>> ", checkboxes, genres);
   // if (movieFromStore?.title === undefined) {
   //   return <h2>Loading...</h2>;
   // } else
@@ -100,7 +110,7 @@ function Details() {
         </div>
         <p>Genres:</p>
         <div id="checkboxes">
-          {genres.map((genre, index) => (
+          {genres.allGenres.map((genre, index) => (
             <label key={index} htmlFor={genre.id}>
               <input
                 checked={
@@ -142,7 +152,7 @@ function Details() {
         />
         <p>Genres:</p>
         <ul>
-          {recentGenres?.genre_array.map((item, index) => (
+          {genres.recentGenres?.genre_array?.map((item, index) => (
             <li key={index}>{genres[item - 1]?.name}</li>
           ))}
         </ul>

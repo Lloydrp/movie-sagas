@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import logger from "redux-logger";
 // Import saga middleware
 import createSagaMiddleware from "redux-saga";
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, take } from "redux-saga/effects";
 import axios from "axios";
 
 // Create the rootSaga generator function
@@ -21,6 +21,7 @@ function* rootSaga() {
   yield takeEvery("REFRESH_GENRES", refreshGenres);
   yield takeEvery("REFRESH_MOVIE", refreshMovie);
   yield takeEvery("DELETE_MOVIE", deleteMovie);
+  yield takeEvery("REFRESH_FROM_SAVE", refreshFromSave);
 }
 
 function* fetchAllMovies() {
@@ -78,7 +79,8 @@ function* refreshGenres(action) {
     yield axios.post(`/api/genre/${action.payload.id}`, {
       checkboxes: action.payload.checkboxes,
     });
-    put({ type: "FETCH_ID_GENRE", payload: movieid });
+    yield put({ type: "FETCH_ID_GENRE", payload: movieid });
+    yield put({ type: "FETCH_MOVIES" });
   } catch (error) {
     console.log("error caught in refreshGenres :>> ", error);
   }
@@ -99,6 +101,21 @@ function* deleteMovie(action) {
     yield axios.delete(`/api/movie/${action.payload}`);
   } catch (error) {
     console.log("error caught in deleteMovie :>> ", error);
+  }
+}
+
+function* refreshFromSave(action) {
+  try {
+    yield axios.delete(`/api/genre/removegenre/${action.payload.id}`);
+    yield axios.post(`/api/genre/${action.payload.id}`, {
+      checkboxes: action.payload.checkboxes,
+    });
+    yield axios.put(`/api/movie/`, action.payload);
+    yield put({ type: "RESET_RECENT" });
+    yield put({ type: "FETCH_MOVIES" });
+    yield put({ type: "FETCH_ID_GENRE", payload: movieid });
+  } catch (error) {
+    console.log("error caught in refreshGenres :>> ", error);
   }
 }
 
