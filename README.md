@@ -14,7 +14,7 @@ With additional features to come, such as sorting, searching, and custom genres,
 
 ## Screen Shot
 
-![Home Page](/public/images/Home%20Page.jpg"Home Page")
+![Home Page](/public/images/Home%20Page.jpg "Home Page")
 ![Add Movie](/public/images/Add%20Movie.jpg "Add Movie Page")
 ![Details Top](/public/images/Preview%20Top.jpg "Details Top")
 ![Details Bottom](/public/images/Preview%20Bottom.jpg "Details Bottom")
