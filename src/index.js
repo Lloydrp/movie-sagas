@@ -131,7 +131,7 @@ const storeInstance = createStore(
     genres,
   }),
   // Add sagaMiddleware to our store
-  applyMiddleware(sagaMiddleware, logger)
+  applyMiddleware(sagaMiddleware)
 );
 
 // Pass rootSaga into our sagaMiddleware

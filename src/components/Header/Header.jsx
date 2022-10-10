@@ -5,7 +5,7 @@ function Header({ addButton }) {
   const history = useHistory();
   return (
     <header>
-      <h1>The Movie Saga!</h1>
+      <h1 className="bg-slate-600">The Movie Saga!</h1>
       <Route
         exact
         path="/"

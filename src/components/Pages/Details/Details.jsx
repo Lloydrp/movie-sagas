@@ -56,7 +56,7 @@ function Details() {
     history.replace("/");
     setTimeout(() => {
       dispatch({ type: "FETCH_MOVIES" });
-    }, 200);
+    }, 100);
   }
 
   function handleReturnToMovies() {
