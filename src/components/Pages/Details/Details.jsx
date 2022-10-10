@@ -79,7 +79,7 @@ function Details() {
     //Begin EDIT MODE detail page
     return (
       <section className="flex justify-center">
-        <div className="flex w-4/5 flex-col">
+        <div className="flex w-4/5 flex-col md:w-1/2">
           <div className="flex items-center">
             <input
               className="my-5 h-2/5 w-full border-2 border-b-blue-700 bg-white p-5 text-center text-3xl font-bold"
@@ -90,7 +90,7 @@ function Details() {
             />
           </div>
           <img
-            className="mb-5 rounded-md border-2 border-black"
+            className="mb-5 rounded-md border-2 border-black md:w-1/2 md:self-center"
             src={movieFromStore?.poster}
             alt={"Image of the movie" + movieFromStore?.title}
           />
@@ -164,12 +164,12 @@ function Details() {
     return (
       //Begin base Detail page
       <section className="flex justify-center">
-        <div className="flex w-4/5 flex-col">
+        <div className="flex w-4/5 flex-col md:w-1/2">
           <h2 className="my-10 h-1/5 whitespace-normal text-5xl font-bold">
             {movieFromStore?.title}
           </h2>
           <img
-            className="mb-5 rounded-md border-2 border-black"
+            className="mb-5 rounded-md border-2 border-black md:w-1/2 md:self-center"
             src={movieFromStore?.poster}
             alt={"Image of the movie" + movieFromStore?.title}
           />

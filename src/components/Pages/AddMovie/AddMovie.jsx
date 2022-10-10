@@ -40,7 +40,7 @@ function AddMovie() {
   }, []);
   return (
     <section className="flex justify-center">
-      <div className="flex w-4/5 flex-col">
+      <div className="flex w-4/5 flex-col md:w-1/3">
         <h2 className="my-3 text-xl font-bold">Add Movie</h2>
         <input
           className="text-l h-2/12 mb-3 w-full border-2 border-b-blue-700 bg-white py-1 text-center font-bold"
