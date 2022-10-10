@@ -56,9 +56,9 @@ function EditDetails({
     history.replace("/");
     //Refresh movielist after short delay this likely is not the best fix
     //If this is not on, then movies don't show until refreshed on main page
-    setTimeout(() => {
-      dispatch({ type: "FETCH_MOVIES" });
-    }, 150);
+    // setTimeout(() => {
+    //   dispatch({ type: "FETCH_MOVIES" });
+    // }, 150);
   } //end handleSave
 
   //Begin function to handle delete button
