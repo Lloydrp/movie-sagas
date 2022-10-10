@@ -61,6 +61,13 @@ function EditDetails({
     // }, 150);
   } //end handleSave
 
+  //EXAMPLE OF GETTING ONLY NEW GENRES
+  // console.log("checkboxes, genres :>> ", checkboxes, genres);
+  // let newCheckboxes = checkboxes.filter(
+  //   (item) => !genres.recentGenres.genre_array.includes(item)
+  // );
+  // console.log("newCheckboxes :>> ", newCheckboxes);
+
   //Begin function to handle delete button
   function handleDelete() {
     dispatch({ type: "DELETE_MOVIE", payload: movieid });

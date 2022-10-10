@@ -14,7 +14,7 @@ function Header() {
         render={() => (
           <div>
             <button
-              className="mt-8 hover:text-green-400"
+              className="mt-8 font-bold hover:text-green-400"
               onClick={() => history.push("/addmovie")}
             >
               <svg

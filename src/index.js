@@ -99,7 +99,7 @@ function* postGenres(action) {
     yield axios.post(`/api/genre/${action.payload.id}`, {
       checkboxes: action.payload.checkboxes,
     });
-    put({ type: "PUT_MOVIE", payload: action.payload });
+    yield put({ type: "PUT_MOVIE", payload: action.payload });
   } catch (error) {
     console.log("error caught in postGenres :>> ", error);
   }

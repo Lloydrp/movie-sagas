@@ -62,7 +62,6 @@ router.post("/:movieid", async (req, res) => {
       });
   }
   res.sendStatus(200);
-
 }); //end POST
 
 module.exports = router;
